@@ -17,6 +17,23 @@ exports.checkID = (req, res, next, val) => {
   next();
 };
 
+// Create a checkBody middleware
+// Check if body contains the name and price property
+// If not, send back 400 (bad request)
+// Add it to the post handler stack
+exports.checkBody = (req, res, next) => {
+  const { name, price } = req.body;
+
+  if (!name || !price) {
+    return res.status(400).json({
+      status: "fail",
+      message: "Please provide name and price",
+    });
+  }
+
+  next();
+};
+
 exports.getAllTours = (req, res) => {
   res.status(200).json({
     status: "success",
