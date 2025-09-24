@@ -1,12 +1,25 @@
-const fs = require('fs');
+const fs = require("fs");
 
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
 );
 
+exports.checkID = (req, res, next, val) => {
+  console.log(`Tour id is:  ${val}`);
+
+  if (req.params.id * 1 > tours.length) {
+    return res.status(404).json({
+      status: "fail",
+      message: "Invalid ID",
+    });
+  }
+
+  next();
+};
+
 exports.getAllTours = (req, res) => {
   res.status(200).json({
-    status: 'success',
+    status: "success",
     requestedAt: req.requestTime,
     results: tours.length,
     data: {
@@ -25,7 +38,7 @@ exports.createTour = (req, res) => {
     JSON.stringify(tours),
     (err) => {
       res.status(201).json({
-        status: 'success',
+        status: "success",
         data: {
           tour: newTour,
         },
@@ -35,17 +48,10 @@ exports.createTour = (req, res) => {
 };
 
 exports.updateTour = (req, res) => {
-  if (req.params.id * 1 > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
-
   res.status(200).json({
-    status: 'success',
+    status: "success",
     data: {
-      tour: '<Updated tour here...>',
+      tour: "<Updated tour here...>",
     },
   });
 };
@@ -53,17 +59,10 @@ exports.updateTour = (req, res) => {
 exports.getTourById = (req, res) => {
   const tourId = parseInt(req.params.id);
 
-  if (tourId > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
-
   const tour = tours.find((element) => element.id === tourId);
 
   res.status(200).json({
-    status: 'success',
+    status: "success",
     data: {
       tour,
     },
@@ -71,15 +70,8 @@ exports.getTourById = (req, res) => {
 };
 
 exports.deleteTour = (req, res) => {
-  if (req.params.id * 1 > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
-
   res.status(204).json({
-    status: 'success',
+    status: "success",
     data: null,
   });
 };
