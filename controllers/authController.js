@@ -15,7 +15,7 @@ const signToken = (id) => {
 const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
 
-  res.status(status).json({
+  res.status(statusCode).json({
     status: "success",
     token,
     data: {
@@ -185,7 +185,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
 
   // 2. Check if POSTed current password is correct
   const isCorrectPassword = await user.correctPassword(
-    req.body.passwordConfirm,
+    req.body.passwordCurrent,
     user.password
   );
 
