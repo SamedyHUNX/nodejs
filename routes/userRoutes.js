@@ -25,6 +25,8 @@ userRouter.post("/forgot-password", forgotPassword);
 userRouter.patch("/reset-password/:token", resetPassword);
 userRouter.patch("/update-password/", protect, updatePassword);
 
+userRouter.patch("/update-me", protect, )
+
 // USERS
 userRouter.route("/").get(getAllUsers).post(createUser);
 userRouter.route("/:id").get(getUser).patch(updateUser).delete(deleteUser);
