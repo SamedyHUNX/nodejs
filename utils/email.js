@@ -4,11 +4,11 @@ const sendEmail = async (options) => {
   // 1. Create a transporter
   // always the same regardless of service we use
   const transporter = nodemailer.createTransport({
-    service: process.env.EMAIL_HOST,
+    host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT,
     auth: {
       user: process.env.EMAIL_USERNAME,
-      password: process.env.EMAIL_PASSWORD,
+      pass: process.env.EMAIL_PASSWORD,
     },
   });
 
@@ -22,7 +22,12 @@ const sendEmail = async (options) => {
   };
 
   // 3. Actually send the email
-  await transporter.sendMail(mailOptions);
+  try {
+    await transporter.sendMail(mailOptions);
+  } catch (err) {
+    console.error("Email sending failed:", err);
+    throw err;
+  }
 };
 
 module.exports = sendEmail;
