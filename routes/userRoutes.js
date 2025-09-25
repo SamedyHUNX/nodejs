@@ -5,6 +5,8 @@ const {
   getUser,
   updateUser,
   deleteUser,
+  updateMe,
+  deleteMe,
 } = require("./../controllers/userController");
 const {
   signup,
@@ -25,7 +27,8 @@ userRouter.post("/forgot-password", forgotPassword);
 userRouter.patch("/reset-password/:token", resetPassword);
 userRouter.patch("/update-password/", protect, updatePassword);
 
-userRouter.patch("/update-me", protect, )
+userRouter.patch("/update-me", protect, updateMe);
+userRouter.delete("/delete-me", protect, deleteMe);
 
 // USERS
 userRouter.route("/").get(getAllUsers).post(createUser);
