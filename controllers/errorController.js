@@ -17,6 +17,14 @@ const handleValidationErrorDb = (err) => {
   return new AppError(message, 400);
 };
 
+const handleJwtError = (err) => {
+  return new AppError("Invalid token. Please login again!", 401);
+};
+
+const handleExpiredJwt = (err) => {
+  return new AppError("Expired token. Please login again", 401);
+};
+
 const sendErrorDev = (err, res) => {
   res.status(err.statusCode).json({
     status: err.status,
@@ -59,6 +67,8 @@ module.exports = (err, req, res, next) => {
     if (error.code === 11000) error = handleDuplicateFieldsDb(error);
     if (error.name === "ValidationError")
       error = handleValidationErrorDb(error);
+    if (error.name === "JsonWebTokenError") error = handleJwtError(error);
+    if (error.name === "TokenExpiredError") error = handleExpiredJwt(error);
 
     sendErrorProd(error, res);
   }
