@@ -24,15 +24,19 @@ exports.signup = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.login = (req, res) => {
+exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
   // 1. Check if email and password exist
   if (!email || !password) {
-    throw new AppError("Please provide email and password", 400);
+    return next(new AppError("Please provide email and password", 400));
   }
 
   // 2. Check if user exists and password is correct
+  const user = await User.findOne({ email }).select("+password");
+  if (!user || !(await user.correctPassword(password, user.password))) {
+    return next(new AppError("Incorrect email or password", 401));
+  }
 
   // 3. If everything is ok, send the token to client
   const token = "";
@@ -40,4 +44,4 @@ exports.login = (req, res) => {
     status: "success",
     token,
   });
-};
+});
