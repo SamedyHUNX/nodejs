@@ -15,6 +15,7 @@ const {
   resetPassword,
   updatePassword,
   protect,
+  restrictTo,
 } = require("../controllers/authController");
 
 const userRouter = express.Router();
