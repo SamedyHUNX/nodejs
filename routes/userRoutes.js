@@ -30,11 +30,12 @@ router.patch("/reset-password/:token", resetPassword);
 
 router.use(protect);
 router.get("/me", protect, getMe, getUser);
-router.patch("/update-password/", protect, updatePassword);
-router.patch("/update-me", protect, updateMe);
-router.delete("/delete-me", protect, deleteMe);
+router.patch("/update-password/", updatePassword);
+router.patch("/update-me", updateMe);
+router.delete("/delete-me", deleteMe);
 
 // USERS
+router.use(restrictTo("admin"));
 router.route("/").get(getAllUsers).post(createUser);
 router.route("/:id").get(getUser).patch(updateUser).delete(deleteUser);
 
