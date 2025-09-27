@@ -46,23 +46,7 @@ exports.createTour = catchAsync(async (req, res) => {
 });
 
 // 3. Update a Tour
-exports.updateTour = catchAsync(async (req, res) => {
-  const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-
-  if (!tour) {
-    return next(new AppError("No tour found with that ID", 404));
-  }
-
-  res.status(200).json({
-    status: "success",
-    data: {
-      tour,
-    },
-  });
-});
+exports.updateTour = factory.updateOne(Tour);
 
 // 4. Get a Tour by ID
 exports.getTourById = catchAsync(async (req, res, next) => {
