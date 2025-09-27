@@ -13,25 +13,7 @@ exports.aliasTopTours = (req, res, next) => {
 };
 
 // 1. Get All Tours
-exports.getAllTours = catchAsync(async (req, res) => {
-  // EXECUTE QUERY
-  const feature = new APIFeatures(Tour.find(), req.query)
-    .filter()
-    .sort()
-    .limitField()
-    .paginate();
-  const tours = await feature.query;
-
-  // SEND RESPONSE
-  res.status(200).json({
-    status: "success",
-    requestedAt: req.requestTime,
-    results: tours.length,
-    data: {
-      tours,
-    },
-  });
-});
+exports.getAllTours = factory.getAll(Tour);
 
 // 2. Create A Tour
 exports.createTour = factory.createOne(Tour);
