@@ -13,23 +13,23 @@ const { protect, restrictTo } = require("../controllers/authController");
 // const { createReview } = require("../controllers/reviewController");
 const reviewRouter = require("./reviewRoutes");
 
-const tourRouter = express.Router();
+const router = express.Router();
 
-// tourRouter
+// router
 //   .route("/:tourId/reviews")
 //   .post(protect, restrictTo("users"), createReview);
-tourRouter.use("/:tourId:/reviews", reviewRouter);
+router.use("/:tourId:/reviews", reviewRouter);
 
-tourRouter.route("/top-5-cheap").get(aliasTopTours, getAllTours);
+router.route("/top-5-cheap").get(aliasTopTours, getAllTours);
 
-tourRouter.route("/tour-stats").get(getTourStats);
-tourRouter.route("/monthly-plan/:year").get(getMonthlyPlan);
+router.route("/tour-stats").get(getTourStats);
+router.route("/monthly-plan/:year").get(getMonthlyPlan);
 
-tourRouter.route("/").get(protect, getAllTours).post(createTour);
-tourRouter
+router.route("/").get(protect, getAllTours).post(createTour);
+router
   .route("/:id")
   .get(getTourById)
   .patch(updateTour)
   .delete(protect, restrictTo("admin", "lead-guide"), deleteTour);
 
-module.exports = tourRouter;
+module.exports = router;

@@ -7,6 +7,7 @@ const {
   deleteUser,
   updateMe,
   deleteMe,
+  getMe,
 } = require("./../controllers/userController");
 const {
   signup,
@@ -18,21 +19,23 @@ const {
   restrictTo,
 } = require("../controllers/authController");
 
-const userRouter = express.Router();
+const router = express.Router();
+
+router.get("/me", protect, getMe, getUser);
 
 // AUTHENTICATION
-userRouter.post("/signin", login);
-userRouter.post("/signup", signup);
+router.post("/signin", login);
+router.post("/signup", signup);
 
-userRouter.post("/forgot-password", forgotPassword);
-userRouter.patch("/reset-password/:token", resetPassword);
-userRouter.patch("/update-password/", protect, updatePassword);
+router.post("/forgot-password", forgotPassword);
+router.patch("/reset-password/:token", resetPassword);
+router.patch("/update-password/", protect, updatePassword);
 
-userRouter.patch("/update-me", protect, updateMe);
-userRouter.delete("/delete-me", protect, deleteMe);
+router.patch("/update-me", protect, updateMe);
+router.delete("/delete-me", protect, deleteMe);
 
 // USERS
-userRouter.route("/").get(getAllUsers).post(createUser);
-userRouter.route("/:id").get(getUser).patch(updateUser).delete(deleteUser);
+router.route("/").get(getAllUsers).post(createUser);
+router.route("/:id").get(getUser).patch(updateUser).delete(deleteUser);
 
-module.exports = userRouter;
+module.exports = router;
