@@ -78,11 +78,9 @@ reviewModel.statics.calcAverageRatings = async function (tourId) {
   }
 };
 
-reviewModel.post("save", function (next) {
+reviewModel.post("save", function () {
   // this points to current review
   this.constructor.calcAverageRatings(this.tour);
-
-  next();
 });
 
 // findByIdAndUpdate
