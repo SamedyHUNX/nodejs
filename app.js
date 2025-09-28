@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require("express");
 const AppError = require("./utils/appError");
 const mongoSanitize = require("express-mongo-sanitize");
@@ -6,12 +7,16 @@ const hpp = require("hpp");
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const globalErrorHandler = require("./controllers/errorController");
-const app = express();
 
 const morgan = require("morgan");
 const tourRouter = require("./routes/tourRoutes");
 const userRouter = require("./routes/userRoutes");
 const reviewRouter = require("./routes/reviewRoutes");
+
+const app = express();
+app.set("view engine", "pug");
+app.set("views", path.join(__dirname, "views"));
+app.use(express.static(path.join(__dirname, "public")));
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
@@ -56,6 +61,13 @@ app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   console.log(req.headers);
   next();
+});
+
+app.get("/", (req, res) => {
+  res.status(200).render("base", {
+    tour: "The Forest Hiker",
+    user: "Samedy",
+  });
 });
 
 app.use("/api/v1/tours", tourRouter);
