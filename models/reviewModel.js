@@ -76,6 +76,19 @@ reviewModel.post("save", function (next) {
   next();
 });
 
+// findByIdAndUpdate
+// findByIdAndDelete
+reviewModel.pre(/^findOneAnd/, async function (next) {
+  this.r = await this.findOne();
+  next();
+});
+
+reviewModel.post(/^findOneAnd/, async function () {
+  // await this.findOne() does not work here
+  // because query has already been executed
+  await this.r.constructor.calcAverageRatings(this.r.tour);
+});
+
 const Review = mongoose.model("Review", reviewModel);
 
 module.exports = Review;
