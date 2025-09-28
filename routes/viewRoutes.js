@@ -3,15 +3,15 @@ const { getOverview, getTour } = require("./../controllers/viewController");
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.status(200).render("base", {
-    tour: "The Forest Hiker",
-    user: "Samedy",
-  });
-});
+// Option 1: Redirect root to overview
+router.get("/", getOverview);
+
+// Or Option 2: Render overview directly at root
+// router.get("/", (req, res) => {
+//   res.redirect("/overview");
+// });
 
 router.get("/overview", getOverview);
-
 router.get("/tour", getTour);
 
 module.exports = router;
