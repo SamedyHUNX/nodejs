@@ -220,6 +220,14 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, res);
 });
 
+exports.logout = (req, res) => {
+  res.cookie("jwt", "loggedOut", {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+  res.status(200).json({ status: "success" });
+};
+
 // Only for rendered pages, no errors!
 exports.isLoggedIn = catchAsync(async (req, res, next) => {
   let token;
