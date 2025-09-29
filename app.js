@@ -7,6 +7,7 @@ const hpp = require("hpp");
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const globalErrorHandler = require("./controllers/errorController");
+const cookieParser = require("cookie-parser");
 
 const morgan = require("morgan");
 const tourRouter = require("./routes/tourRoutes");
@@ -54,7 +55,7 @@ app.use(
     origin: [
       "http://localhost:3002",
       "http://127.0.0.1:3002",
-      "http://localhost:3000", // add other ports if needed
+      "http://localhost:3000",
     ],
     credentials: true, // if you're sending cookies/auth headers
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
@@ -64,6 +65,7 @@ app.use(
 
 // Body parse, reading data from body into req.body
 app.use(express.json({ limit: "10kb" }));
+app.use(cookieParser());
 
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
@@ -90,7 +92,7 @@ app.use(express.static(`${__dirname}/public`));
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  console.log(req.headers);
+  console.log(req.cookies);
   next();
 });
 
