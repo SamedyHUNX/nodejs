@@ -14,7 +14,10 @@ const userRouter = require("./routes/userRoutes");
 const reviewRouter = require("./routes/reviewRoutes");
 const viewRouter = require("./routes/viewRoutes");
 
+const cors = require("cors");
+
 const app = express();
+
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
@@ -30,7 +33,34 @@ const limiter = rateLimit({
 });
 app.use("/api", limiter);
 // Set security HTTP headers
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "https://cdn.jsdelivr.net"],
+        connectSrc: [
+          "'self'",
+          "http://127.0.0.1:3002",
+          "http://localhost:3002",
+        ],
+      },
+    },
+  })
+);
+
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3002",
+      "http://127.0.0.1:3002",
+      "http://localhost:3000", // add other ports if needed
+    ],
+    credentials: true, // if you're sending cookies/auth headers
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 // Body parse, reading data from body into req.body
 app.use(express.json({ limit: "10kb" }));
