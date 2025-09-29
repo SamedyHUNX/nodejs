@@ -4,7 +4,7 @@ const {
   getTour,
   getLoginForm,
 } = require("./../controllers/viewController");
-const { protect } = require("../controllers/authController");
+const { protect, isLoggedIn } = require("../controllers/authController");
 
 const router = express.Router();
 
@@ -16,8 +16,10 @@ router.get("/", getOverview);
 //   res.redirect("/overview");
 // });
 
+router.use(isLoggedIn);
+
 router.get("/overview", getOverview);
-router.get("/tour/:slug", protect, getTour);
+router.get("/tour/:slug", getTour);
 router.get("/login", getLoginForm);
 
 module.exports = router;
