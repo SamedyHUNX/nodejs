@@ -12,6 +12,6 @@ router.get("/", getOverview);
 // });
 
 router.get("/overview", getOverview);
-router.get("/tour", getTour);
+router.get("/tour/:slug", getTour);
 
 module.exports = router;
