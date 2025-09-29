@@ -114433,10 +114433,11 @@ exports.logout = function (req, res) {
 // Only for rendered pages, no errors!
 exports.isLoggedIn = catchAsync(/*#__PURE__*/function () {
   var _ref7 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee7(req, res, next) {
-    var token, decoded, freshUser;
+    var token, decoded, freshUser, _t3;
     return _regenerator().w(function (_context7) {
-      while (1) switch (_context7.n) {
+      while (1) switch (_context7.p = _context7.n) {
         case 0:
+          _context7.p = 0;
           if (!req.cookies.jwt) {
             _context7.n = 5;
             break;
@@ -114465,11 +114466,18 @@ exports.isLoggedIn = catchAsync(/*#__PURE__*/function () {
           res.locals.user = freshUser;
           return _context7.a(2, next());
         case 5:
-          next();
+          _context7.n = 7;
+          break;
         case 6:
+          _context7.p = 6;
+          _t3 = _context7.v;
+          return _context7.a(2, next());
+        case 7:
+          next();
+        case 8:
           return _context7.a(2);
       }
-    }, _callee7);
+    }, _callee7, null, [[0, 6]]);
   }));
   return function (_x16, _x17, _x18) {
     return _ref7.apply(this, arguments);
